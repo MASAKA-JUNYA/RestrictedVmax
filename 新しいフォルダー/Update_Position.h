@@ -1,0 +1,31 @@
+#pragma once
+#include "Decide_Velocity.h"
+#include <set>
+class Update_Position : public Decide_Velocity {
+public:
+	Update_Position(int filenumber, int lanelength, int Numberofvehicle, int Numberoflane, int Cooperator);
+	~Update_Position();
+	Measuredinfomation measured;
+	bool DoMeasure = false;
+	void Update_EachVehiclePosition();
+	Measuredinfomation AddThisTimeResult();
+	struct AverageVelocity {
+		int Defector;
+		int Cooperator;
+		AverageVelocity operator+=(const AverageVelocity& other) {
+			this->Defector += other.Defector;
+			this->Cooperator += other.Cooperator;
+			return *this;
+		}
+		void init() {
+			Defector = 0;
+			Cooperator = 0;
+		}
+	};
+	AverageVelocity AverageVelocityThisTime;
+private:
+	int lanevelocity = 0;
+	int MeasuringPoint = 100;
+	bool _UpdateEachLane(int leaderID);
+	Measuredinfomation _Measure(Measuredinfomation& MeasuredThistime);
+};
